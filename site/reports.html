@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Analytics | Yönetim Raporları</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <h1><span class="icon">⚡</span>Nova Analytics</h1>
+            <nav class="nav-links">
+                <a href="index.html"><span class="icon">📊</span>Dashboard</a>
+                <a href="sales.html"><span class="icon">💰</span>Satışlar</a>
+                <a href="users.html"><span class="icon">🧑‍💼</span>Kullanıcılar</a>
+                <a href="reports.html"><span class="icon">📈</span>Raporlar</a>
+            </nav>
+        </aside>
+        <main>
+            <header class="page-header">
+                <div>
+                    <h2>Stratejik Raporlar</h2>
+                    <p>KPI performansı, çeyreklik sonuçlar ve gelir projeksiyonlarına ilişkin özet.</p>
+                </div>
+                <div class="actions">
+                    <button class="button">PDF'e Aktar</button>
+                    <button class="button">Paydaşlarla Paylaş</button>
+                </div>
+            </header>
+
+            <section class="grid cols-4" id="reportKpis"></section>
+
+            <section class="grid cols-2" style="margin-top: 2rem;">
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Çeyreklik Finansal Sonuçlar</h3>
+                        <p class="muted">Gelir ve gider trendlerinin çeyreklik karşılaştırması.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="quarterlyChart"></canvas>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-header">
+                        <h3>6 Aylık Gelir Tahmini</h3>
+                        <p class="muted">Gerçekleşme projeksiyonu ve hedef kıyaslaması.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>Yönetici Özet Notları</h3>
+                    <p class="muted">Bu dönem için dikkat edilmesi gereken maddeler ve aksiyon önerileri.</p>
+                </div>
+                <div class="grid" style="gap: 1rem;">
+                    <div class="card" style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2);">
+                        <h3>Büyüme Odakları</h3>
+                        <ul>
+                            <li>APAC bölgesindeki enterprise fırsatların hızlandırılması.</li>
+                            <li>Ürün içi yükseltme kampanyası ile LTV'nin artırılması.</li>
+                            <li>Ortak pazarlama planı ile referans kanalının güçlendirilmesi.</li>
+                        </ul>
+                    </div>
+                    <div class="card" style="background: rgba(129, 140, 248, 0.08); border: 1px solid rgba(129, 140, 248, 0.2);">
+                        <h3>Risk ve Önlemler</h3>
+                        <ul>
+                            <li>Kur dalgalanmalarına karşı fiyatlandırma revizyonu.</li>
+                            <li>İşletme maliyetlerini %4 azaltacak otomasyon planı.</li>
+                            <li>İptal eden müşteriler için yeniden kazanım programı.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script type="module" src="./assets/app.js"></script>
+</body>
+</html>

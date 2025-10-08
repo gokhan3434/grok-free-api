@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Analytics | Kullanıcı Analizi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <h1><span class="icon">⚡</span>Nova Analytics</h1>
+            <nav class="nav-links">
+                <a href="index.html"><span class="icon">📊</span>Dashboard</a>
+                <a href="sales.html"><span class="icon">💰</span>Satışlar</a>
+                <a href="users.html"><span class="icon">🧑‍💼</span>Kullanıcılar</a>
+                <a href="reports.html"><span class="icon">📈</span>Raporlar</a>
+            </nav>
+        </aside>
+        <main>
+            <header class="page-header">
+                <div>
+                    <h2>Kullanıcı Davranışları</h2>
+                    <p>Aktivite trendleri, segmentler ve destek taleplerine hızlı bakış.</p>
+                </div>
+                <div class="actions">
+                    <button class="button">Segment Oluştur</button>
+                    <button class="button">Kitleyi Karşılaştır</button>
+                </div>
+            </header>
+
+            <section class="grid cols-3">
+                <article class="card" data-metric="activeUsers">
+                    <h3>Aktif Kullanıcı</h3>
+                    <p class="metric-value"></p>
+                    <p class="metric-change">
+                        <span class="badge"></span>
+                        <span class="value"></span>
+                    </p>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas></canvas>
+                    </div>
+                </article>
+                <article class="card" data-metric="retention">
+                    <h3>Tutma Oranı</h3>
+                    <p class="metric-value"></p>
+                    <p class="metric-change">
+                        <span class="badge"></span>
+                        <span class="value"></span>
+                    </p>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas></canvas>
+                    </div>
+                </article>
+                <article class="card" data-metric="orders">
+                    <h3>Yeni Kayıt</h3>
+                    <p class="metric-value"></p>
+                    <p class="metric-change">
+                        <span class="badge"></span>
+                        <span class="value"></span>
+                    </p>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid cols-2" style="margin-top: 2rem;">
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Haftalık Aktivite</h3>
+                        <p class="muted">Günlük aktif kullanıcı ve yeni kayıt trendleri.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="userActivityChart"></canvas>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Kitle Segmentleri</h3>
+                        <p class="muted">Kurumsal, KOBİ, Startup ve bireysel kullanıcı dağılımı.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="segmentChart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid cols-2" style="margin-top: 2rem;">
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Cohort Retention</h3>
+                        <p class="muted">İlk 6 ay içerisindeki müşteri tutma oranları.</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="retentionTable">
+                            <thead>
+                                <tr>
+                                    <th>Dönem</th>
+                                    <th>Oran</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Destek Talepleri</h3>
+                        <p class="muted">Güncel taleplerin öncelik, konu ve durum özetleri.</p>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table" id="supportTickets">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Kullanıcı</th>
+                                    <th>Öncelik</th>
+                                    <th>Konu</th>
+                                    <th>Durum</th>
+                                    <th>Güncelleme</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </article>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script type="module" src="./assets/app.js"></script>
+</body>
+</html>
