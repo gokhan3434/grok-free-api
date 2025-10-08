@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Analytics | Satış Analizi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <h1><span class="icon">⚡</span>Nova Analytics</h1>
+            <nav class="nav-links">
+                <a href="index.html"><span class="icon">📊</span>Dashboard</a>
+                <a href="sales.html"><span class="icon">💰</span>Satışlar</a>
+                <a href="users.html"><span class="icon">🧑‍💼</span>Kullanıcılar</a>
+                <a href="reports.html"><span class="icon">📈</span>Raporlar</a>
+            </nav>
+        </aside>
+        <main>
+            <header class="page-header">
+                <div>
+                    <h2>Satış Performansı</h2>
+                    <p>Kanal bazlı gelirler, pipeline görünümü ve ürün katkıları.</p>
+                </div>
+                <div class="actions">
+                    <button class="button">CSV Aktar</button>
+                    <button class="button">Tahminleri Güncelle</button>
+                </div>
+            </header>
+
+            <section class="grid cols-3">
+                <article class="card" data-metric="revenue">
+                    <h3>Toplam Gelir</h3>
+                    <p class="metric-value"></p>
+                    <p class="metric-change">
+                        <span class="badge"></span>
+                        <span class="value"></span>
+                    </p>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas></canvas>
+                    </div>
+                </article>
+                <article class="card" data-metric="orders">
+                    <h3>Satış Adedi</h3>
+                    <p class="metric-value"></p>
+                    <p class="metric-change">
+                        <span class="badge"></span>
+                        <span class="value"></span>
+                    </p>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas></canvas>
+                    </div>
+                </article>
+                <article class="card" data-metric="activeUsers">
+                    <h3>Aktif Abone</h3>
+                    <p class="metric-value"></p>
+                    <p class="metric-change">
+                        <span class="badge"></span>
+                        <span class="value"></span>
+                    </p>
+                    <div class="chart-container" style="height: 120px;">
+                        <canvas></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="grid cols-2" style="margin-top: 2rem;">
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Kanal Bazlı Gelir Dağılımı</h3>
+                        <p class="muted">E-ticaret ve fiziksel mağaza kanallarındaki aylık gelir trendi.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="channelBreakdown"></canvas>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-header">
+                        <h3>Satış Hunisi</h3>
+                        <p class="muted">Farklı aşamalardaki fırsat sayıları ve dönüşüm gücü.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="pipelineChart"></canvas>
+                    </div>
+                </article>
+            </section>
+
+            <section class="card" style="margin-top: 2rem;">
+                <div class="card-header">
+                    <h3>En Çok Satan Ürünler</h3>
+                    <p class="muted">Gelir katkısı, büyüme oranı ve durum özetleri.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table" id="topProducts">
+                        <thead>
+                            <tr>
+                                <th>Ürün</th>
+                                <th>Gelir</th>
+                                <th>Büyüme</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script type="module" src="./assets/app.js"></script>
+</body>
+</html>
