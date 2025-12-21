@@ -1,2 +1,1 @@
-fastapi
-uvicorn
+-r ilan_toplayici/requirements.txt
