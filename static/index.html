@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Tarzı Akıllı Karşılama</title>
+  <style>
+    :root {
+      --primary: #25d366;
+      --primary-dark: #128c7e;
+      --bg: #0b141a;
+      --panel: #111b21;
+      --panel-alt: #202c33;
+      --text: #e9edef;
+      --muted: #8696a0;
+      --warning: #f5c542;
+      --danger: #e55252;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    header {
+      background: linear-gradient(120deg, var(--primary-dark), var(--primary));
+      padding: 18px 24px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+    }
+    header h1 { margin: 0; font-size: 24px; }
+    header p { margin: 4px 0 0; color: #e6fff1; }
+    .page {
+      padding: 16px;
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 360px 1fr;
+      align-items: start;
+    }
+    @media (max-width: 1080px) { .page { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--panel);
+      border: 1px solid #1f2c33;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+    }
+    .card h2 { margin-top: 0; font-size: 18px; }
+    label { display: block; font-weight: 600; margin: 12px 0 6px; color: var(--muted); }
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      background: var(--panel-alt);
+      color: var(--text);
+      border: 1px solid #1f2c33;
+      border-radius: 10px;
+      padding: 10px 12px;
+      outline: none;
+      font-size: 14px;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .row { display: flex; gap: 10px; }
+    .row > * { flex: 1; }
+    .toggle {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      color: var(--text);
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      background: var(--primary-dark);
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(0,0,0,.3);
+    }
+    .button.secondary { background: var(--panel-alt); color: var(--text); }
+    .button.danger { background: var(--danger); }
+    .chat {
+      background: url('https://i.imgur.com/0bXl7QZ.png');
+      border-radius: 12px;
+      border: 1px solid #1f2c33;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .chat-header {
+      padding: 12px 16px;
+      background: var(--panel-alt);
+      border-bottom: 1px solid #1f2c33;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chat-body {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .bubble {
+      max-width: 68%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      position: relative;
+      word-break: break-word;
+      line-height: 1.4;
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    }
+    .bubble.user {
+      align-self: flex-end;
+      background: #005c4b;
+      border-bottom-right-radius: 4px;
+    }
+    .bubble.assistant {
+      align-self: flex-start;
+      background: #202c33;
+      border-bottom-left-radius: 4px;
+    }
+    .meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .quick-replies { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .quick-replies button {
+      border: 1px solid #1f2c33;
+      background: var(--panel-alt);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .chat-footer {
+      padding: 12px 16px;
+      border-top: 1px solid #1f2c33;
+      background: var(--panel-alt);
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+    }
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .pill { background: #1f2c33; border-radius: 12px; padding: 4px 8px; color: var(--muted); font-size: 12px; }
+    .stack { display: grid; gap: 8px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>WhatsApp Tarzı Akıllı Karşılama</h1>
+    <p>Yapay zekâ destekli otomatik mesajlaşma, hızlı yanıtlar, mesai kontrolü ve eskalasyon akışları</p>
+  </header>
+
+  <section class="page">
+    <div class="card">
+      <h2>Otomasyon Ayarları</h2>
+      <form id="config-form" class="stack">
+        <label>İşletme adı</label>
+        <input type="text" name="business_name" required>
+
+        <label class="toggle">
+          <input type="checkbox" name="greeting_enabled"> Yeni kişiler için karşılama mesajı
+        </label>
+
+        <label>Karşılama mesajı</label>
+        <textarea name="greeting_message"></textarea>
+
+        <label>Mesai dışı yanıtı</label>
+        <textarea name="fallback_message"></textarea>
+
+        <label>Yetkilendirme / eskalasyon kişi/rolü</label>
+        <input type="text" name="escalation_contact">
+
+        <div class="row">
+          <div>
+            <label>Açılış saati</label>
+            <input type="number" name="open_hour" min="0" max="23">
+          </div>
+          <div>
+            <label>Kapanış saati</label>
+            <input type="number" name="close_hour" min="0" max="23">
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label>Zaman dilimi</label>
+            <input type="text" name="timezone">
+          </div>
+          <div>
+            <label class="toggle" style="margin-top: 24px;">
+              <input type="checkbox" name="weekend_closed"> Hafta sonu kapalı
+            </label>
+          </div>
+        </div>
+
+        <label class="toggle">
+          <input type="checkbox" name="allow_after_hours_ai"> Mesai dışı da yapay zekâ yanıtı ver
+        </label>
+
+        <div class="row">
+          <div>
+            <label>AI modeli</label>
+            <input type="text" name="ai_model">
+          </div>
+          <div>
+            <label>Sıcaklık (0-1)</label>
+            <input type="number" step="0.1" min="0" max="1" name="temperature">
+          </div>
+        </div>
+
+        <button class="button" type="submit">Ayarları Kaydet</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <div class="chat">
+        <div class="chat-header">
+          <div>
+            <div style="font-weight:700">WhatsApp Otomasyon</div>
+            <div class="status" id="status-pill"><span>●</span><span>Durum bekleniyor</span></div>
+          </div>
+          <div style="margin-left:auto;" class="pill" id="model-pill">Model: ?</div>
+        </div>
+        <div class="chat-body" id="chat-body"></div>
+        <div class="chat-footer">
+          <div>
+            <div class="row">
+              <input type="text" id="sender-number" placeholder="Numara (örn: 5551234567)">
+              <input type="text" id="sender-name" placeholder="Ad">
+            </div>
+            <textarea id="message-input" placeholder="Mesajınızı yazın..." rows="3"></textarea>
+            <label class="toggle" style="margin-top: 4px;">
+              <input type="checkbox" id="urgent-flag"> Acil / öncelikli taleptir
+            </label>
+            <label class="toggle" style="margin-top: 4px;">
+              <input type="checkbox" id="new-contact-flag" checked> Yeni kişi olarak işaretle
+            </label>
+          </div>
+          <div class="stack">
+            <button class="button" id="send-btn">Gönder</button>
+            <button class="button secondary" id="clear-btn" type="button">Sıfırla</button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <div class="quick-replies" id="quick-replies"></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const chatBody = document.getElementById("chat-body");
+    const statusPill = document.getElementById("status-pill");
+    const modelPill = document.getElementById("model-pill");
+    const quickReplies = document.getElementById("quick-replies");
+    const messageInput = document.getElementById("message-input");
+    const senderNumber = document.getElementById("sender-number");
+    const senderName = document.getElementById("sender-name");
+    const urgentFlag = document.getElementById("urgent-flag");
+    const newContactFlag = document.getElementById("new-contact-flag");
+    const sendBtn = document.getElementById("send-btn");
+    const clearBtn = document.getElementById("clear-btn");
+    const form = document.getElementById("config-form");
+
+    let config = null;
+    let conversationId = null;
+
+    async function loadConfig() {
+      const res = await fetch("/api/config");
+      config = await res.json();
+      form.business_name.value = config.business_name;
+      form.greeting_enabled.checked = config.greeting_enabled;
+      form.greeting_message.value = config.greeting_message;
+      form.fallback_message.value = config.fallback_message;
+      form.escalation_contact.value = config.escalation_contact;
+      form.open_hour.value = config.business_hours.open_hour;
+      form.close_hour.value = config.business_hours.close_hour;
+      form.timezone.value = config.business_hours.timezone;
+      form.weekend_closed.checked = config.business_hours.weekend_closed;
+      form.allow_after_hours_ai.checked = config.allow_after_hours_ai;
+      form.ai_model.value = config.ai_model;
+      form.temperature.value = config.temperature;
+      renderQuickReplies(config.quick_replies);
+      setStatus("Durum bekleniyor", "orange");
+      modelPill.textContent = "Model: " + config.ai_model;
+    }
+
+    function renderQuickReplies(list) {
+      quickReplies.innerHTML = "";
+      list.forEach(q => {
+        const btn = document.createElement("button");
+        btn.textContent = q.title;
+        btn.title = q.body;
+        btn.onclick = () => { messageInput.value = q.body; messageInput.focus(); };
+        quickReplies.appendChild(btn);
+      });
+    }
+
+    function pushBubble(author, content) {
+      const wrap = document.createElement("div");
+      wrap.className = `bubble ${author}`;
+      wrap.innerHTML = content.replace(/\n/g, "<br>");
+      chatBody.appendChild(wrap);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function setStatus(text, color = "var(--muted)") {
+      statusPill.children[0].textContent = "●";
+      statusPill.children[0].style.color = color;
+      statusPill.children[1].textContent = text;
+    }
+
+    async function sendMessage() {
+      if (!messageInput.value.trim()) return;
+      if (!senderNumber.value.trim()) { alert("Numara girin"); return; }
+
+      const payload = {
+        sender_name: senderName.value || "Ziyaretçi",
+        sender_number: senderNumber.value.trim(),
+        content: messageInput.value.trim(),
+        urgent: urgentFlag.checked,
+        new_contact: newContactFlag.checked,
+        conversation_id: conversationId || senderNumber.value.trim(),
+      };
+
+      pushBubble("user", payload.content);
+      setStatus("Yanıt hazırlanıyor...", "#f5c542");
+      messageInput.value = "";
+      newContactFlag.checked = false;
+
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      conversationId = data.conversation_id;
+
+      data.replies.forEach(r => pushBubble(r.author, r.content));
+      modelPill.textContent = "Model: " + (data.replies[0]?.ai_model || config.ai_model);
+
+      const status = data.routing.status;
+      if (status === "online") setStatus("Çevrimiçi - anlık yanıt", "#25d366");
+      else if (status === "closed_hours") setStatus("Mesai dışı - otomatik yanıt", "#f5c542");
+      else setStatus("Mesai dışı - AI destekli", "#f5c542");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        business_name: form.business_name.value,
+        greeting_enabled: form.greeting_enabled.checked,
+        greeting_message: form.greeting_message.value,
+        fallback_message: form.fallback_message.value,
+        escalation_contact: form.escalation_contact.value,
+        allow_after_hours_ai: form.allow_after_hours_ai.checked,
+        ai_model: form.ai_model.value,
+        temperature: Number(form.temperature.value),
+        business_hours: {
+          open_hour: Number(form.open_hour.value),
+          close_hour: Number(form.close_hour.value),
+          timezone: form.timezone.value,
+          weekend_closed: form.weekend_closed.checked,
+        },
+        quick_replies: config.quick_replies,
+        intents: config.intents,
+        tone: config.tone,
+      };
+      const res = await fetch("/api/config", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      config = await res.json();
+      renderQuickReplies(config.quick_replies);
+      setStatus("Ayarlar güncellendi", "#25d366");
+    });
+
+    sendBtn.onclick = sendMessage;
+    clearBtn.onclick = () => { chatBody.innerHTML = ""; conversationId = null; setStatus("Temizlendi", "#25d366"); };
+    messageInput.addEventListener("keyup", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+
+    loadConfig();
+  </script>
+</body>
+</html>
