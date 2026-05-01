@@ -60,6 +60,11 @@ class TokenProvider:
             self.base_url,
             urljoin(self.base_url, "./"),
             urljoin(self.base_url, "./index.html"),
+            urljoin(self.base_url, "GiSoftGis/"),
+            urljoin(self.base_url, "GiSoftGis/index.html"),
+            urljoin(self.base_url, "GiSoftGis/rest/auth/token"),
+            urljoin(self.base_url, "GiSoftGis/rest/token"),
+            urljoin(self.base_url, "GiSoftGis/api/token"),
             urljoin(self.base_url, "rest/auth/token"),
             urljoin(self.base_url, "rest/token"),
             urljoin(self.base_url, "api/token"),
@@ -156,7 +161,7 @@ class DesktopApp:
         self.root = root
         self.root.title("Beykoz CBS Otomatik")
         self.root.geometry("1100x760")
-        self.base_url_var = StringVar(value="https://cbs.beykoz.bel.tr/GiSoftGis/")
+        self.base_url_var = StringVar(value="https://cbs.beykoz.bel.tr/")
         self.endpoint_var = StringVar(value="https://cbs.beykoz.bel.tr/GiSoftGis/rest/entity/report/parcel/2/{parcel}")
         self.token_var = StringVar(value="")
         self.token_endpoint_var = StringVar(value="")
