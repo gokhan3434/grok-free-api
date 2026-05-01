@@ -1,6 +1,12 @@
 # Beykoz CBS Desktop Analiz
 
-Bu uygulama, Beykoz mahallelerinden ada/parsel sorgusu alıp CBS verisini çekmek, imar hesaplarını çıkarmak ve PDF rapor üretmek için tasarlanmıştır.
+## Otomatik Token Bulma
+Program artık tokenı otomatik bulmayı dener:
+1. Base URL içeriğini tarar.
+2. HTML/JS dosyalarında `X-Auth-Token`, `authToken`, `token` patternlerini regex ile arar.
+3. Bulamazsa Token Endpoint çağırır.
+4. Bulamazsa Token Command çalıştırır.
+5. En sonda manual token kullanır.
 
 ## Çalıştırma
 ```bash
@@ -10,28 +16,10 @@ pip install -r requirements.txt
 python desktop_app.py
 ```
 
-## Token/API Yapısı (Detay)
-Uygulama 3 farklı token kaynağını destekler:
-
-1. **Manual X-Auth-Token**
-   - Tarayıcı geliştirici araçlarından alınan token doğrudan girilir.
-2. **Token Endpoint (opsiyonel)**
-   - Eğer kurum tarafında token üreten bir endpoint varsa URL girilir.
-   - `JSON Path` alanı ile response içindeki token yolu belirtilir (ör: `data.token`).
-3. **Token Command (opsiyonel)**
-   - Kurum içi script/komut token üretiyorsa (ör: SSO script), bu komut çalıştırılır ve stdout token kabul edilir.
-
-Öncelik sırası: manual token > token endpoint > token command.
-
-## Beykoz Mahalleleri
-Uygulama içinde Beykoz mahalleleri combobox ile gelir; kullanıcı eksiksiz listeden seçip sorgu yapar.
-
-## Build (indirilebilir tek dosya)
+## Build
 ```bash
 ./build_desktop.sh
 ```
-Çıktı:
-- `dist/beykoz-cbs-desktop` (Linux)
 
-## Hukuki Not
-Veriler bilgilendirme amaçlıdır; resmi imar belgesi yerine geçmez.
+## Not
+Beykoz mahalleleri combobox içinde hazır gelir.
