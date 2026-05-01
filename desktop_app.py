@@ -206,7 +206,8 @@ class DesktopApp:
                 self.last_query, self.last_analysis = q, analysis
                 self.root.after(0, lambda: self._show({"token_source": source, "token_found": bool(token), "query": q.__dict__, "analysis": analysis, "raw": raw}))
             except Exception as e:
-                self.root.after(0, lambda: self._err(str(e)))
+                err_msg = str(e)
+                self.root.after(0, lambda msg=err_msg: self._err(msg))
         threading.Thread(target=worker, daemon=True).start()
 
     def _show(self, payload):
