@@ -1,15 +1,34 @@
-# Grok Free API
-This is unoffical free Grok OpenAI type API.  
-**This is unstable and may against grok TOS, use at your own risk!!**
-## setup
-Add your cookie in `main.py` first  
+# Beykoz CBS Desktop Analiz (MVP)
+
+Bu repo artık iki parçadan oluşur:
+- `main.py`: Mevcut FastAPI servisi.
+- `desktop_app.py`: Ada/parsel ile CBS sorgulayıp analiz ve PDF raporu üreten masaüstü uygulama.
+
+## Hızlı Başlatma (Desktop)
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python desktop_app.py
 ```
-uv venv
-uv pip install -r requirements.txt
-git clone https://github.com/mem0ai/grok3-api.git
-cd ./grok3-api
-uv pip install .
-cd ..
-main.py
+
+## Tek Tık Çalıştırılabilir Dosya Üretme
+
+```bash
+./build_desktop.sh
 ```
-You can access it at `127.0.0.1:8046/v1`  
+
+Çıktı:
+- `dist/beykoz-cbs-desktop` (Linux tek dosya executable)
+
+> Not: Windows için `.exe` üretimi Windows ortamında PyInstaller ile yapılmalıdır.
+
+## Kullanım
+1. `CBS Endpoint Template` alanına endpoint şablonu girin.
+2. Gerekirse `X-Auth-Token` girin.
+3. İlçe/Mahalle/Ada/Parsel girip **Sorgula + Analiz** tıklayın.
+4. Sonuçları inceledikten sonra **PDF Oluştur** ile raporu `reports/` klasörüne alın.
+
+## Hukuki Uyarı
+Uygulama içindeki çıktılar bilgilendirme amaçlıdır, resmi belge yerine geçmez.
