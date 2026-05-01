@@ -1,11 +1,8 @@
-# Beykoz CBS Desktop Analiz (MVP)
+# Beykoz CBS Desktop Analiz
 
-Bu repo artık iki parçadan oluşur:
-- `main.py`: Mevcut FastAPI servisi.
-- `desktop_app.py`: Ada/parsel ile CBS sorgulayıp analiz ve PDF raporu üreten masaüstü uygulama.
+Bu uygulama, Beykoz mahallelerinden ada/parsel sorgusu alıp CBS verisini çekmek, imar hesaplarını çıkarmak ve PDF rapor üretmek için tasarlanmıştır.
 
-## Hızlı Başlatma (Desktop)
-
+## Çalıştırma
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -13,22 +10,28 @@ pip install -r requirements.txt
 python desktop_app.py
 ```
 
-## Tek Tık Çalıştırılabilir Dosya Üretme
+## Token/API Yapısı (Detay)
+Uygulama 3 farklı token kaynağını destekler:
 
+1. **Manual X-Auth-Token**
+   - Tarayıcı geliştirici araçlarından alınan token doğrudan girilir.
+2. **Token Endpoint (opsiyonel)**
+   - Eğer kurum tarafında token üreten bir endpoint varsa URL girilir.
+   - `JSON Path` alanı ile response içindeki token yolu belirtilir (ör: `data.token`).
+3. **Token Command (opsiyonel)**
+   - Kurum içi script/komut token üretiyorsa (ör: SSO script), bu komut çalıştırılır ve stdout token kabul edilir.
+
+Öncelik sırası: manual token > token endpoint > token command.
+
+## Beykoz Mahalleleri
+Uygulama içinde Beykoz mahalleleri combobox ile gelir; kullanıcı eksiksiz listeden seçip sorgu yapar.
+
+## Build (indirilebilir tek dosya)
 ```bash
 ./build_desktop.sh
 ```
-
 Çıktı:
-- `dist/beykoz-cbs-desktop` (Linux tek dosya executable)
+- `dist/beykoz-cbs-desktop` (Linux)
 
-> Not: Windows için `.exe` üretimi Windows ortamında PyInstaller ile yapılmalıdır.
-
-## Kullanım
-1. `CBS Endpoint Template` alanına endpoint şablonu girin.
-2. Gerekirse `X-Auth-Token` girin.
-3. İlçe/Mahalle/Ada/Parsel girip **Sorgula + Analiz** tıklayın.
-4. Sonuçları inceledikten sonra **PDF Oluştur** ile raporu `reports/` klasörüne alın.
-
-## Hukuki Uyarı
-Uygulama içindeki çıktılar bilgilendirme amaçlıdır, resmi belge yerine geçmez.
+## Hukuki Not
+Veriler bilgilendirme amaçlıdır; resmi imar belgesi yerine geçmez.
